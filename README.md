@@ -10,7 +10,7 @@
     docker-compose -f ./db/docker-compose.yml -f ./redis/docker-compose.yml -f ./es/docker-compose.yml up -d
     ```
 
-4. Exec into the database container to create a new table `mastodon`
+4. (Optional) Exec into the database container to create a new table `mastodon`. May not need if you defined POSTGRES_DB in `db/.env.db`.
 
     ```bash
     docker exec -it mastodon-db /bin/bash

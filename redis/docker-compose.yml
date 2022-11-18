@@ -1,6 +1,6 @@
 version: '3'
 networks:
-  internal_network:
+  mastodon_network:
     external: true
 services:
   redis:
@@ -8,7 +8,7 @@ services:
     restart: always
     image: redis:7-alpine
     networks:
-      - internal_network
+      - mastodon_network
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
     volumes:

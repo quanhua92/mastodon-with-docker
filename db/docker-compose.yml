@@ -1,6 +1,6 @@
 version: '3'
 networks:
-  internal_network:
+  mastodon_network:
     external: true
 services:
   db:
@@ -9,7 +9,7 @@ services:
     image: postgres:14-alpine
     shm_size: 256mb
     networks:
-      - internal_network
+      - mastodon_network
     healthcheck:
       test: ['CMD', 'pg_isready', '-U', 'postgres']
     volumes:

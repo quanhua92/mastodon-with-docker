@@ -1,6 +1,4 @@
-.env.production
-mastodon/public
-db/.env.db
-db/data
-redis/data
-es/data
+.env.mastodon
+.env.db
+.env.es
+mastodon/data

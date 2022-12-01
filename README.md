@@ -7,31 +7,28 @@
 3. Run DB & Redis & Elastic search. Skip if you use managed services from cloud provider.
 
     ```bash
-    docker-compose -f ./db/docker-compose.yml -f ./redis/docker-compose.yml -f ./es/docker-compose.yml up -d
+    docker-compose -f ./mastodon/docker-compose.yml up -d db redis
     ```
 
-4. (Optional) Exec into the database container to create a new table `mastodon`. May not need if you defined POSTGRES_DB in `db/.env.db`.
+4. Run `rake secret` twice to get two random secret.
 
     ```bash
-    docker exec -it mastodon-db /bin/bash
-
-    psql -h mastodon-db -U postgres
-    CREATE DATABASE mastodon
+    docker-compose -f ./mastodon/docker-compose.yml run --rm console bundle exec rake secret
     ```
 
-5. Run `rake secret` twice to get two random secret.
+5. Generate VAPID key for push notification.
 
     ```bash
-    docker run -it tootsuite/mastodon bundle exec rake secret
+    docker-compose -f ./mastodon/docker-compose.yml run --rm console bundle exec rake mastodon:webpush:generate_vapid_key
     ```
 
-6. Generate VAPID key for push notification.
+6. Copy `mastodon/.env.mastodon.sample` to `mastodon/.env.mastodon`. Fill in the information & above keys. Replace example.com with your domain. Fill in SMTP & S3 Object Storage info.
+7. Run `rake db:setup` to setup database.
 
     ```bash
-    docker run -it tootsuite/mastodon bundle exec rake mastodon:webpush:generate_vapid_key
+    docker-compose -f ./mastodon/docker-compose.yml run --rm console bundle exec rake db:setup
     ```
 
-7. Copy `mastodon/.env.production.sample` to `mastodon/.env.production`. Fill in the information & above keys.
 8. Run mastodon services
 
     ```bash
